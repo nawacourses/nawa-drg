@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>برنامج DRG | تصنيف المجموعات التشخيصية | نوا للتدريب الصحي</title>
+<meta name="description" content="برنامج DRGs — دليلك نحو التحول إلى الرعاية الصحية القائمة على القيمة. بالتعاون مع eHealth Education وصلات. التقسيط متاح.">
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2267505010741435');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2267505010741435&ev=PageView&noscript=1"/></noscript>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ══ RESET ══ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Cairo',Arial,sans-serif;color:#1A1640;overflow-x:hidden;direction:rtl;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+img{display:block;max-width:100%}
+
+/* ══ NAV ══ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 5%;
+  background:rgba(10,6,40,.95);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.nav-logo{height:30px;filter:brightness(10)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-badge{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  border-radius:50px;padding:5px 12px;
+  font-size:11px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;
+}
+.nav-cta{
+  background:#F0A500;color:#1A1640;border-radius:50px;
+  padding:9px 22px;font-size:13px;font-weight:800;
+  white-space:nowrap;transition:opacity .2s;
+}
+.nav-cta:hover{opacity:.88}
+@media(max-width:700px){.nav-badge{display:none}}
+
+/* ══ HERO ══ */
+.hero{
+  min-height:100vh;
+  padding:100px 5% 60px;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(145deg,#080420 0%,#1e1b5e 40%,#4a2d85 75%,#6637a8 100%);
+}
+.hero-dots{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:30px 30px;
+}
+.hero-glow{
+  position:absolute;top:-10%;right:5%;z-index:0;pointer-events:none;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(180,120,255,.2),transparent 70%);
+}
+
+/* ══ HERO GRID ══ */
+.hero-inner{
+  position:relative;z-index:2;
+  max-width:1100px;margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:40px;
+  align-items:start;
+  min-height:calc(100vh - 160px);
+}
+.hero-img-col{display:none}
+
+.hero-copy{color:#fff}
+.badges-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+  border-radius:50px;padding:5px 13px;font-size:11px;font-weight:700;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#00E5B4;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.7);opacity:.4}}
+.acc-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:20px}
+.acc-pill{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.9);white-space:nowrap;
+}
+.acc-logo-box{
+  background:rgba(255,255,255,.95);border-radius:6px;padding:4px 10px;
+  display:flex;align-items:center;
+}
+.acc-logo-box img{height:18px}
+.hero h1{
+  font-size:clamp(22px,2.6vw,42px);
+  font-weight:900;line-height:1.18;margin-bottom:16px;color:#fff;
+}
+.c-purple{color:#C8A8FF}
+.c-gold{color:#F0A500}
+.hero-sub{
+  font-size:14px;color:rgba(255,255,255,.84);
+  line-height:1.9;margin-bottom:26px;max-width:460px;
+}
+.hero-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#F0A500;color:#1A1640;border-radius:50px;
+  padding:14px 34px;font-size:16px;font-weight:800;
+  box-shadow:0 8px 28px rgba(240,165,0,.44);transition:all .25s;
+}
+.hero-btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
+
+/* stats row */
+.stats-row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:22px}
+.stat-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:12px 20px;text-align:center}
+.stat-box .sn{font-size:22px;font-weight:900;color:#F0A500}
+.stat-box .sl{font-size:11px;color:rgba(255,255,255,.8);margin-top:2px}
+
+/* promo img */
+.promo-img-wrap{
+  margin-top:28px;
+  width:100%;
+  max-width:460px;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,.4);
+}
+.promo-img-wrap img{width:100%;height:auto;display:block;}
+
+/* ══ FORM ══ */
+.form-card{
+  background:#fff;border-radius:20px;
+  box-shadow:0 24px 70px rgba(0,0,0,.35);
+  overflow:hidden;
+  position:sticky;top:90px;
+}
+.fc-head{
+  background:linear-gradient(135deg,#1E1B5E,#6637A8);
+  padding:16px 24px;text-align:center;color:#fff;
+}
+.fc-disc{
+  display:inline-block;background:#F0A500;color:#1A1640;
+  border-radius:50px;padding:8px 22px;font-size:15px;font-weight:900;
+}
+.fc-body{padding:18px 20px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12px;font-weight:700;color:#4A4070;margin-bottom:5px}
+.field input,.field select,.field textarea{
+  width:100%;border:1.5px solid rgba(107,63,160,.2);border-radius:10px;
+  padding:10px 13px;font-size:13px;font-family:'Cairo',Arial,sans-serif;
+  color:#1A1640;background:#fff;outline:none;transition:border-color .2s;
+  direction:rtl;-webkit-appearance:none;
+}
+.field textarea{resize:vertical;min-height:76px}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:#6637A8;box-shadow:0 0 0 3px rgba(102,55,168,.12);
+}
+.field input::placeholder,.field textarea::placeholder{color:#8878AA}
+.form-submit-btn{
+  width:100%;background:linear-gradient(135deg,#1E1B5E,#6637A8);
+  color:#fff;border:none;border-radius:50px;
+  padding:13px 20px;font-size:15px;font-weight:800;
+  font-family:'Cairo',Arial,sans-serif;
+  cursor:pointer;box-shadow:0 6px 22px rgba(30,27,94,.36);transition:all .25s;
+}
+.form-submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(30,27,94,.46)}
+.form-submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.form-note{text-align:center;font-size:10px;color:#8878AA;margin-top:9px;line-height:1.5}
+.form-success{display:none;text-align:center;padding:22px 0}
+.success-icon{font-size:50px;margin-bottom:9px}
+.form-success h3{font-size:17px;font-weight:900;color:#6637A8;margin-bottom:6px}
+.form-success p{font-size:12px;color:#4A4070;line-height:1.7}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:24px;min-height:auto;}
+  .hero-copy{order:1}
+  .form-card{order:2;position:static}
+  .promo-img-wrap{max-width:100%;margin-top:20px}
+  .hero h1{font-size:clamp(20px,6vw,32px)}
+}
+
+/* ══ STRIP ══ */
+.strip{background:#fff;border-bottom:1px solid rgba(107,63,160,.12);padding:12px 5%}
+.strip-in{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;}
+.strip-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;color:#8878AA;text-transform:uppercase;white-space:nowrap}
+.strip-sep{width:1px;height:18px;background:rgba(107,63,160,.15)}
+.strip-list{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.si{display:flex;align-items:center;gap:5px;background:#F0EBF9;border:1px solid rgba(107,63,160,.15);border-radius:7px;padding:5px 11px;font-size:11px;font-weight:700;color:#4A4070;white-space:nowrap;}
+
+/* ══ SECTIONS ══ */
+.sec{padding:68px 5%}
+.sec-in{max-width:1240px;margin:0 auto}
+.sec-head{text-align:center;margin-bottom:42px}
+.sec-tag{display:inline-block;background:#F0EBF9;color:#6637A8;border:1px solid rgba(102,55,168,.18);border-radius:50px;padding:4px 15px;font-size:12px;font-weight:800;margin-bottom:10px;}
+.sec-title{font-size:clamp(22px,3vw,36px);font-weight:900;line-height:1.25;color:#1A1640;margin-bottom:10px}
+.sec-title em{color:#6637A8;font-style:normal}
+.sec-sub{font-size:14px;color:#4A4070;line-height:1.85;max-width:560px;margin:0 auto}
+
+/* ══ PAIN POINTS ══ */
+.pain-sec{background:#FFF8F0}
+.pain-box{max-width:760px;margin:0 auto;background:#fff;border-radius:20px;border:2px solid rgba(240,165,0,.3);padding:36px;text-align:center;box-shadow:0 8px 28px rgba(240,165,0,.1)}
+.pain-ic{font-size:52px;margin-bottom:14px}
+.pain-box h3{font-size:22px;font-weight:900;color:#1A1640;margin-bottom:12px}
+.pain-box p{font-size:14px;color:#4A4070;line-height:1.9}
+.pain-box strong{color:#F0A500}
+
+/* ══ WHY ══ */
+.why{background:linear-gradient(145deg,#080420 0%,#1e1b5e 40%,#4a2d85 100%);position:relative;overflow:hidden}
+.why::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.why .sec-head{position:relative;z-index:1}
+.why .sec-tag{background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.2)}
+.why .sec-title{color:#fff}.why .sec-title em{color:#C8A8FF}.why .sec-sub{color:rgba(255,255,255,.72)}
+.feats{display:flex;flex-wrap:wrap;gap:14px;position:relative;z-index:1}
+.feat{flex:1 1 calc(50% - 10px);min-width:220px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:22px 18px;color:#fff;transition:all .3s}
+.feat:hover{background:rgba(255,255,255,.13);transform:translateY(-4px)}
+.feat-ic{font-size:30px;margin-bottom:10px}
+.feat h3{font-size:15px;font-weight:800;color:#C8A8FF;margin-bottom:7px}
+.feat p{font-size:13px;line-height:1.8;color:rgba(255,255,255,.74)}
+
+/* ══ CURRICULUM ══ */
+.curr-sec{background:#F8F7FC}
+.curr-grid{display:flex;flex-direction:column;gap:0;max-width:800px;margin:0 auto}
+.curr-item{border-bottom:1px solid rgba(107,63,160,.12)}
+.curr-q{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 4px;cursor:pointer;font-size:14px;font-weight:800;color:#1A1640;user-select:none;transition:color .2s}
+.curr-q:hover{color:#6637A8}
+.ctog{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:#F0EBF9;color:#6637A8;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;transition:all .25s}
+.curr-item.open .ctog{background:#6637A8;color:#fff;transform:rotate(45deg)}
+.curr-ans{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s;font-size:13px;color:#4A4070;line-height:1.85;padding:0 4px}
+.curr-item.open .curr-ans{max-height:300px;padding-bottom:16px}
+.week-tag{display:inline-block;background:#F0EBF9;color:#6637A8;border-radius:50px;padding:2px 10px;font-size:10px;font-weight:800;margin-bottom:8px}
+
+/* ══ WHO ══ */
+.who-sec{background:#fff}
+.who-grid{display:flex;flex-wrap:wrap;gap:14px}
+.wcard{flex:1 1 calc(33.333% - 10px);min-width:200px;background:#F8F7FC;border:1px solid rgba(107,63,160,.14);border-radius:14px;padding:22px 16px;text-align:center;transition:all .3s}
+.wcard:hover{border-color:#6637A8;box-shadow:0 4px 16px rgba(30,27,94,.1);transform:translateY(-3px)}
+.wic{font-size:36px;margin-bottom:10px}
+.wcard h3{font-size:15px;font-weight:800;color:#1A1640;margin-bottom:6px}
+.wcard p{font-size:13px;color:#4A4070;line-height:1.75}
+
+/* ══ INSTALL ══ */
+.install-sec{background:linear-gradient(135deg,#1E1B5E,#6637A8);padding:48px 5%;text-align:center;color:#fff}
+.install-in{max-width:760px;margin:0 auto}
+.install-sec h2{font-size:clamp(20px,3vw,32px);font-weight:900;margin-bottom:7px}
+.install-sec h2 em{color:#FFD580;font-style:normal}
+.install-sec p{font-size:14px;opacity:.84;margin-bottom:26px}
+.install-provs{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.iprov{background:rgba(255,255,255,.11);border:1.5px solid rgba(255,255,255,.22);border-radius:14px;padding:14px 30px;min-width:150px}
+.iprov .pn{font-size:20px;font-weight:900}
+.iprov .ps{font-size:11px;opacity:.7;margin-top:3px}
+
+/* ══ FAQ ══ */
+.faq-sec{background:#F8F7FC}
+.faq-list{max-width:700px;margin:0 auto}
+.faq-item{border-bottom:1px solid rgba(107,63,160,.12)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 4px;cursor:pointer;font-size:14px;font-weight:800;color:#1A1640;user-select:none;transition:color .2s}
+.faq-q:hover{color:#6637A8}
+.ftog{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:#F0EBF9;color:#6637A8;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;transition:all .25s}
+.faq-item.open .ftog{background:#6637A8;color:#fff;transform:rotate(45deg)}
+.faq-ans{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s;font-size:13px;color:#4A4070;line-height:1.85;padding:0 4px}
+.faq-item.open .faq-ans{max-height:200px;padding-bottom:16px}
+
+/* ══ FINAL CTA ══ */
+.final-sec{background:linear-gradient(145deg,#080420 0%,#1e1b5e 50%,#4a2d85 100%);text-align:center;padding:80px 5%;position:relative;overflow:hidden}
+.final-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(102,55,168,.38),transparent)}
+.final-in{position:relative;z-index:1;color:#fff}
+.sbadge{display:inline-flex;align-items:center;gap:7px;background:rgba(240,165,0,.14);border:1px solid rgba(240,165,0,.38);color:#FFD580;border-radius:50px;padding:7px 18px;font-size:12px;font-weight:700;margin-bottom:18px}
+.final-sec h2{font-size:clamp(22px,4vw,40px);font-weight:900;line-height:1.2;margin-bottom:10px}
+.final-sec h2 em{color:#C8A8FF;font-style:normal}
+.final-sec p{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto}
+.gold-btn{display:inline-flex;align-items:center;gap:8px;background:#F0A500;color:#1A1640;border-radius:50px;padding:13px 38px;font-size:15px;font-weight:800;box-shadow:0 8px 26px rgba(240,165,0,.44);transition:all .25s}
+.gold-btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.final-details{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.fd{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px 24px;font-size:13px;color:rgba(255,255,255,.9);font-weight:700}
+
+footer{background:#080420;color:rgba(255,255,255,.4);padding:22px 5%;text-align:center;font-size:12px}
+footer strong{color:rgba(255,255,255,.75)}
+
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#top">
+    <img class="nav-logo" src="https://nawa-edu.com/wp-content/uploads/2023/02/nawa-english.png" alt="NAWA">
+  </a>
+  <div class="nav-right">
+    <div class="nav-badge">🌏 eHealth Education Australia</div>
+    <div class="nav-badge">🤝 صلات</div>
+    <a href="#form" class="nav-cta">اشترك الآن ←</a>
+  </div>
+</nav>
+
+<!-- STICKY BAR -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:9998;background:linear-gradient(90deg,#1E1B5E,#6637A8);color:#fff;text-align:center;padding:10px 5%;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
+  <span>برنامج DRGs | دليلك نحو التحول إلى الرعاية الصحية القائمة على القيمة | التقسيط متاح عبر تابي وتمارا</span>
+  <a href="#form" style="background:#F0A500;color:#1A1640;border-radius:50px;padding:7px 20px;font-size:12px;font-weight:800;white-space:nowrap;">اشترك الآن</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-dots"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-inner">
+
+    <div class="hero-img-col"></div>
+
+    <!-- النص -->
+    <div class="hero-copy">
+      <div class="badges-row">
+        <div class="badge"><div class="dot"></div> برنامج تدريبي متكامل</div>
+        <div class="badge">💳 تقسيط بدون فوائد</div>
+        <div class="badge">🕒 30 ساعة تدريبية</div>
+        <div class="badge">📋 12 محاضرة</div>
+      </div>
+      <div class="acc-row">
+        <div class="acc-logo-box">
+          <img src="https://nawa-edu.com/wp-content/uploads/2023/02/nawa-english.png" alt="NAWA" style="height:18px">
+        </div>
+        <div class="acc-pill">🌏 eHealth Education Australia</div>
+        <div class="acc-pill">🤝 صلات</div>
+        <div class="acc-pill">🌐 IAO</div>
+      </div>
+      <h1>
+        احترف نظام<br>
+        <span class="c-purple">المجموعات التشخيصية (DRGs)</span><br>
+        <span class="c-gold">وأتقن التحول المالي في الرعاية الصحية</span>
+      </h1>
+      <p class="hero-sub">
+        برنامج تدريبي متكامل بالتعاون مع <strong style="color:#C8A8FF">eHealth Education</strong> و<strong style="color:#C8A8FF">صلات</strong>، مصمم لتزويدك بكفاءة الإدارة المالية وجودة الرعاية الصحية.
+        <strong style="color:#F0A500">متبقي 18 شهر فقط على إلزام الجهات الصحية بـ DRGs!</strong>
+      </p>
+
+      <div class="stats-row">
+        <div class="stat-box"><div class="sn">30</div><div class="sl">ساعة تدريبية</div></div>
+        <div class="stat-box"><div class="sn">12</div><div class="sl">محاضرة مكثفة</div></div>
+        <div class="stat-box"><div class="sn">18</div><div class="sl">شهر للإلزام</div></div>
+      </div>
+
+      <div class="promo-img-wrap">
+        <img src="DRG-LINKEDIN.jpg" alt="برنامج تصنيف المجموعات التشخيصية DRG — نوا">
+      </div>
+
+      <a href="#form" class="hero-btn" style="margin-top:24px">🚀 بادر بالانضمام للبرنامج</a>
+    </div>
+
+    <!-- الفورم -->
+    <div class="form-card" id="form">
+      <div class="fc-head">
+        <div class="fc-disc">🎓 سجل في برنامج DRGs الآن</div>
+      </div>
+      <div class="fc-body">
+        <div id="formWrap">
+          <div class="field">
+            <label for="fn">الاسم الكامل *</label>
+            <input type="text" id="fn" placeholder="أدخل اسمك الكامل">
+          </div>
+          <div class="field">
+            <label for="fp">رقم الجوال *</label>
+            <input type="tel" id="fp" placeholder="05xxxxxxxx">
+          </div>
+          <div class="field">
+            <label for="fj">المسمى الوظيفي *</label>
+            <input type="text" id="fj" placeholder="مثال: مرمز طبي، مدير مالي، طبيب...">
+          </div>
+          <div class="field">
+            <label for="fe">البريد الإلكتروني</label>
+            <input type="email" id="fe" placeholder="example@email.com">
+          </div>
+          <div class="field">
+            <label for="fm">رسالتك أو استفسارك</label>
+            <textarea id="fm" placeholder="اكتب رسالتك هنا..."></textarea>
+          </div>
+          <button class="form-submit-btn" id="submitBtn" onclick="doSubmit()">
+            🚀 سجل الآن — المقاعد محدودة
+          </button>
+          <p class="form-note">🔒 بياناتك آمنة وسرية تماماً</p>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">🎉</div>
+          <h3>تم استلام طلبك!</h3>
+          <p>سيتواصل معك أحد مستشارينا خلال 24 ساعة لإتمام تسجيلك في برنامج DRGs.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-in">
+    <span class="strip-lbl">بالتعاون مع</span>
+    <div class="strip-sep"></div>
+    <div class="strip-list">
+      <div class="si">🌏 eHealth Education Australia</div>
+      <div class="si">🤝 صلات</div>
+      <div class="si">🌐 IAO</div>
+      <div class="si">💳 تابي وتمارا</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAIN POINTS -->
+<section class="sec pain-sec">
+  <div class="sec-in">
+    <div class="sec-head rv">
+      <div class="sec-tag">هل تشعر بغموض التحول الجديد؟</div>
+    </div>
+    <div class="pain-box rv">
+      <div class="pain-ic">⏳</div>
+      <h3>متبقي 18 شهر فقط على إلزام الجهات الصحية بـ DRGs</h3>
+      <p>ما زال هناك الكثير من المفاهيم غير الواضحة والممارسات غير المفهومة. التحول نحو نظام التمويل القائم على النشاط (ABF) قادم لا محالة — <strong>السؤال هو: هل أنت مستعد؟</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WILL YOU LEARN -->
+<section class="sec why">
+  <div class="sec-in">
+    <div class="sec-head rv">
+      <div class="sec-tag">ماذا ستتعلم؟</div>
+      <h2 class="sec-title">أتقن لغة التمويل الصحي الحديث<br><em>في 12 محاضرة مكثفة</em></h2>
+      <p class="sec-sub">من أساسيات ABF إلى التطبيق العملي على برمجيات التصنيف</p>
+    </div>
+    <div class="feats">
+      <div class="feat rv d1">
+        <div class="feat-ic">💡</div>
+        <h3>فلسفة التمويل القائم على النشاط ABF</h3>
+        <p>الانتقال من نماذج الدفع التقليدية إلى التمويل الذكي القائم على المسارات العلاجية وفهم الأسس الجديدة.</p>
+      </div>
+      <div class="feat rv d2">
+        <div class="feat-ic">🔢</div>
+        <h3>إتقان منطق DRG</h3>
+        <p>فهم الفئات التشخيصية الرئيسية وآليات احتساب الوزن النسبي للحالات بدقة واحترافية عالية.</p>
+      </div>
+      <div class="feat rv d1">
+        <div class="feat-ic">📑</div>
+        <h3>الترميز السريري المتقدم</h3>
+        <p>احتراف المعيار ACS 0001 وتحديد التشخيص الرئيسي بدقة لضمان استيفاء الموارد وتجنب الخسائر المالية.</p>
+      </div>
+      <div class="feat rv d2">
+        <div class="feat-ic">💻</div>
+        <h3>التطبيق العملي على Grouper</h3>
+        <p>جلسات مباشرة على برمجيات التصنيف واستخدام أدوات متطورة مثل Condition Onset Flag بشكل احترافي.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="sec curr-sec">
+  <div class="sec-in">
+    <div class="sec-head rv">
+      <div class="sec-tag">المنهج التدريبي</div>
+      <h2 class="sec-title">12 يوماً من <em>الاحتراف الكامل</em></h2>
+      <p class="sec-sub">رحلة تدريبية منهجية تنقلك من المفاهيم الأساسية إلى التطبيق الميداني</p>
+    </div>
+    <div class="curr-grid rv">
+      <div class="curr-item">
+        <div class="curr-q" onclick="toggleCurr(this)">
+          <span>📘 الأسبوع الأول — أساسيات التمويل ABF</span>
+          <span class="ctog">+</span>
+        </div>
+        <div class="curr-ans">
+          <span class="week-tag">اليوم 1 — 4</span>
+          <p>أساسيات التمويل القائم على النشاط (ABF) ومنطق عمل الـ Grouper. فهم البنية التحتية لنظام DRGs وكيفية تصنيف الحالات وفق المعايير الدولية المعتمدة في المملكة.</p>
+        </div>
+      </div>
+      <div class="curr-item">
+        <div class="curr-q" onclick="toggleCurr(this)">
+          <span>📗 الأسبوع الثاني — التعمق في ADRG</span>
+          <span class="ctog">+</span>
+        </div>
+        <div class="curr-ans">
+          <span class="week-tag">اليوم 5 — 8</span>
+          <p>التعمق في ترميز الـ ADRG وحالات العلاج غير المكتمل. فهم آليات احتساب الوزن النسبي وتأثيره على التمويل المؤسسي وإدارة الموارد.</p>
+        </div>
+      </div>
+      <div class="curr-item">
+        <div class="curr-q" onclick="toggleCurr(this)">
+          <span>📙 الأسبوع الثالث — جولة في الفئات الطبية</span>
+          <span class="ctog">+</span>
+        </div>
+        <div class="curr-ans">
+          <span class="week-tag">اليوم 9 — 11</span>
+          <p>جولة تفصيلية في كافة الفئات الطبية: الجهاز الدوري، التنفسي، الأورام، الحمل والولادة، وصولاً للصحة النفسية. تطبيق عملي على حالات من كل تخصص.</p>
+        </div>
+      </div>
+      <div class="curr-item">
+        <div class="curr-q" onclick="toggleCurr(this)">
+          <span>🏁 الختام — دراسة حالات وخطط التطبيق</span>
+          <span class="ctog">+</span>
+        </div>
+        <div class="curr-ans">
+          <span class="week-tag">اليوم 12</span>
+          <p>دراسة حالات واقعية من منشآت صحية سعودية، خطط التطبيق المؤسسي، وكيفية تدريب الكوادر الداخلية على النظام الجديد بعد انتهاء البرنامج.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section class="sec who-sec">
+  <div class="sec-in">
+    <div class="sec-head rv">
+      <div class="sec-tag">لمن هذا البرنامج؟</div>
+      <h2 class="sec-title">هذا البرنامج هو <em>استثمارك الأهم</em> إذا كنت:</h2>
+    </div>
+    <div class="who-grid">
+      <div class="wcard rv d1">
+        <div class="wic">🏥</div>
+        <h3>مقدم رعاية صحية</h3>
+        <p>لاكتشاف كيف يغير هذا النموذج أساليب الإدارة والابتكار في منشأتك الصحية.</p>
+      </div>
+      <div class="wcard rv d2">
+        <div class="wic">👨‍💼</div>
+        <h3>إداري أو صانع قرار</h3>
+        <p>لفهم البنية التحتية المطلوبة والسيطرة المالية في ظل نظام DRGs الجديد.</p>
+      </div>
+      <div class="wcard rv d3">
+        <div class="wic">📑</div>
+        <h3>مرمز طبي</h3>
+        <p>لتعزيز دورك الجوهري في دعم بيانات الـ DRGs وتحقيق الدقة السريرية المطلوبة.</p>
+      </div>
+      <div class="wcard rv d1">
+        <div class="wic">💰</div>
+        <h3>مدير مالي</h3>
+        <p>لتعلم إدارة البيانات المالية لدعم التمويل القائم على النشاط وتحسين الأداء المالي.</p>
+      </div>
+      <div class="wcard rv d2">
+        <div class="wic">💳</div>
+        <h3>الجهات الدافعة (Payers)</h3>
+        <p>لفهم مزايا نموذج التمويل الجديد وآليات تطبيقه بفاعلية في بيئة العمل السعودية.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section class="install-sec">
+  <div class="install-in">
+    <h2>استثمر في مهارات المستقبل <em>بلا قلق مالي</em></h2>
+    <p>نوفر لك إمكانية تقسيط رسوم برنامج DRGs على 4 دفعات ميسرة وبدون أي فوائد</p>
+    <div class="install-provs">
+      <div class="iprov">
+        <div class="pn">تابي</div>
+        <div class="ps">4 دفعات بدون فوائد</div>
+      </div>
+      <div class="iprov">
+        <div class="pn">تمارا</div>
+        <div class="ps">4 دفعات بدون فوائد</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec faq-sec">
+  <div class="sec-in">
+    <div class="sec-head rv">
+      <div class="sec-tag">الأسئلة الشائعة</div>
+      <h2 class="sec-title">أسئلة <em>يسألها الجميع</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          هل أحتاج خلفية طبية للالتحاق بالبرنامج؟
+          <span class="ftog">+</span>
+        </div>
+        <div class="faq-ans">البرنامج مصمم ليناسب مختلف الخلفيات — سواء كنت إدارياً، مرمزاً، مالياً، أو طبياً. المحتوى يُقدَّم بطريقة منهجية تبني المعرفة تدريجياً.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          ما هي اللغة المستخدمة في التدريب؟
+          <span class="ftog">+</span>
+        </div>
+        <div class="faq-ans">المحتوى يجمع بين الإنجليزية للمصطلحات التقنية والعربية للشرح والتوضيح، مع فيديوهات من خبراء أستراليين ومحاضرات مباشرة باللغة العربية.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          هل البرنامج مباشر أم مسجل؟
+          <span class="ftog">+</span>
+        </div>
+        <div class="faq-ans">البرنامج يجمع بين الجلسات المباشرة (Live) والمحتوى المسجل (Recorded)، مما يمنحك مرونة الوصول في الوقت الذي يناسبك.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          ما الشهادة التي سأحصل عليها؟
+          <span class="ftog">+</span>
+        </div>
+        <div class="faq-ans">ستحصل على شهادة "Introductory Activity-Based Funding" المعتمدة من IAO وeHealth Education Australia لتوثيق خبرتك المهنية في نظام DRGs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-sec">
+  <div class="final-in">
+    <div class="sbadge">🔥 المقاعد محدودة — سجل الآن</div>
+    <h2>امتلك الخبرة الأكثر طلباً<br><em>في القطاع الصحي اليوم</em></h2>
+    <p>التحول نحو نظام DRGs قد بدأ.. كن أنت من يقوده في منشأتك.</p>
+    <div class="final-details">
+      <div class="fd">🕒 30 ساعة تدريبية</div>
+      <div class="fd">🎓 شهادة معتمدة IAO & eHe</div>
+      <div class="fd">📋 12 محاضرة مكثفة</div>
+    </div>
+    <a href="#form" class="gold-btn">🚀 سجل الآن — المقاعد محدودة</a>
+  </div>
+</section>
+
+<footer>
+  <strong>نوا للتدريب الصحي</strong> — جميع الحقوق محفوظة © 2025
+</footer>
+
+<script>
+var FORMS_URL = 'https://forms.gle/Ye7Lft5aRw2D8aoS6';
+var SCRIPT_URL = 'https://script.google.com/macros/library/d/1OxP7IL-scncw-eW-bc0a_cvw78xFnl5GAukNn5p2Jdbt5LM5Lg3--MoT/1';
+
+function doSubmit() {
+  var name  = document.getElementById('fn').value.trim();
+  var phone = document.getElementById('fp').value.trim();
+  var job   = document.getElementById('fj').value.trim();
+  var email = document.getElementById('fe').value.trim();
+  var msg   = document.getElementById('fm').value.trim();
+  if (!name)  { alert('يرجى إدخال الاسم الكامل'); return; }
+  if (!phone) { alert('يرجى إدخال رقم الجوال');   return; }
+  if (!job)   { alert('يرجى إدخال المسمى الوظيفي'); return; }
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري الإرسال...';
+  fetch(SCRIPT_URL,{
+    method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      timestamp:new Date().toLocaleString('ar-SA',{timeZone:'Asia/Riyadh'}),
+      name:name,phone:phone,job:job,email:email,message:msg,
+      source:document.referrer||'مباشر',
+      program:'DRG'
+    })
+  }).catch(function(){});
+  if(typeof fbq!=='undefined'){fbq('track','Lead',{content_category:'DRG Training',currency:'SAR'});}
+  document.getElementById('formWrap').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+function toggleFaq(el){
+  var item=el.parentNode;
+  var open=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open')});
+  if(!open)item.classList.add('open');
+}
+function toggleCurr(el){
+  var item=el.parentNode;
+  var open=item.classList.contains('open');
+  document.querySelectorAll('.curr-item').forEach(function(i){i.classList.remove('open')});
+  if(!open)item.classList.add('open');
+}
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});
+},{threshold:0.1});
+document.querySelectorAll('.rv').forEach(function(el){obs.observe(el);});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
