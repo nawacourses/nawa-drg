@@ -186,6 +186,9 @@ footer strong{color:rgba(255,255,255,.75)}
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLKJMSDW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <nav class="nav">
   <a href="#top">
@@ -526,6 +529,8 @@ function doSubmit() {
   if(typeof fbq!=='undefined'){fbq('track','Lead',{content_category:'DRG Training',currency:'SAR'});}
   document.getElementById('formWrap').style.display='none';
   document.getElementById('formSuccess').style.display='block';
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({event:'form_success',course:'DRG'});
 }
 function toggleFaq(el){
   var item=el.parentNode;
