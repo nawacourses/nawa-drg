@@ -196,9 +196,75 @@ footer strong{color:rgba(255,255,255,.75)}
 .rv{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
 .rv.vis{opacity:1;transform:translateY(0)}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* ─── NATIONAL DAY BADGE ─── */
+@keyframes ndPulse{0%,100%{box-shadow:0 10px 34px rgba(0,0,0,.55),0 0 0 0 rgba(240,165,0,.35)}50%{box-shadow:0 10px 34px rgba(0,0,0,.55),0 0 0 9px rgba(240,165,0,0)}}
+@keyframes ndFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes ndIn{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+.nd-badge-wrap{
+  position:fixed; top:100px; left:18px; z-index:500;
+  width:206px;
+  animation:ndIn .55s cubic-bezier(.34,1.56,.64,1) .3s both, ndFloat 4.8s ease-in-out 1s infinite;
+}
+.nd-card{
+  position:relative; cursor:pointer; border:none; width:100%; padding:0;
+  border-radius:14px; overflow:hidden;
+  background:linear-gradient(180deg,#0d3320,#082014);
+  border:2px solid #F0A500;
+  animation:ndPulse 2.8s ease-out infinite;
+}
+.nd-close{
+  position:absolute; top:7px; left:7px; width:22px;height:22px;border-radius:50%;
+  background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:12px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  z-index:4;
+}
+.nd-wordmark{
+  margin:16px 14px 0; border-radius:8px; border:1.5px solid rgba(255,255,255,.55);
+  background-color:#0b3d24;
+  background-image:
+    linear-gradient(45deg, #145c37 25%, transparent 25%, transparent 75%, #145c37 75%),
+    linear-gradient(45deg, #145c37 25%, transparent 25%, transparent 75%, #145c37 75%);
+  background-size:12px 12px; background-position:0 0, 6px 6px;
+  padding:12px 6px; text-align:center;
+}
+.nd-slogan{
+  font-family:'Cairo',sans-serif; font-weight:900; font-size:18px; color:#fff;
+  line-height:1.1; letter-spacing:.2px; text-shadow:0 2px 6px rgba(0,0,0,.4); white-space:nowrap;
+}
+.nd-sub-ar{margin-top:10px;padding:0 8px;font-size:11px;font-weight:800;color:#fff;letter-spacing:.1px;line-height:1.3;text-align:center}
+.nd-sub-en{margin-top:3px;font-size:8px;font-weight:700;color:#8fd6ac;letter-spacing:2.5px;text-transform:uppercase;text-align:center}
+.nd-offer-pill{
+  width:fit-content; max-width:86%; margin:11px auto 14px;
+  background:#F0A500; color:#1A1640; font-size:9px; font-weight:800;
+  border-radius:14px; padding:6px 12px; line-height:1.35; text-align:center;
+}
+@media (max-width:640px){
+  .nd-badge-wrap{width:112px;top:82px;left:10px}
+  .nd-wordmark{margin:8px 7px 0;padding:6px 3px}
+  .nd-slogan{font-size:11px}
+  .nd-sub-ar{font-size:7.5px;margin-top:5px}
+  .nd-sub-en{font-size:5.3px;letter-spacing:1.5px}
+  .nd-offer-pill{font-size:6.2px;padding:4px 7px;margin:6px auto 8px;border-radius:10px}
+  .nd-close{width:16px;height:16px;font-size:9px;top:4px;left:4px}
+}
 </style>
 </head>
 <body>
+
+<!-- NATIONAL DAY BADGE -->
+<div class="nd-badge-wrap" id="ndBadge">
+  <div class="nd-card" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">
+    <button class="nd-close" onclick="event.stopPropagation();document.getElementById('ndBadge').style.display='none'" aria-label="إغلاق">✕</button>
+    <div class="nd-wordmark">
+      <div class="nd-slogan">عزّنا بطبعنا</div>
+    </div>
+    <div class="nd-sub-ar">اليوم الوطني<br>السعودي ٩٦</div>
+    <div class="nd-sub-en">Saudi National Day</div>
+    <div class="nd-offer-pill">خصم المجموعات لك حتى لو لوحدك</div>
+  </div>
+</div>
+
 
 <nav class="nav">
   <a href="#top">
